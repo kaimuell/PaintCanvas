@@ -1,16 +1,17 @@
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class MainFrame extends Frame {
+public class MainFrame extends JFrame {
 
-    MainFrame(){
+    MainFrame(Settings settings){
         super("PaintCanvas");
-        this.setPreferredSize(new Dimension(400, 550));
-        SelectPanel sp = new SelectPanel();
-        Leinwand lw = new Leinwand(sp);
+        this.setPreferredSize(new Dimension(600, 600));
+        SelectPanel sp = new SelectPanel(settings);
+        MyCanvas lw = new MyCanvas(settings);
         this.add(lw, BorderLayout.NORTH);
         this.add(sp, BorderLayout.SOUTH);
         Button resetButton = new Button("RESET");
@@ -22,6 +23,7 @@ public class MainFrame extends Frame {
         });
         sp.add(resetButton);
         this.setVisible(true);
+        this.setResizable(false);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -29,9 +31,5 @@ public class MainFrame extends Frame {
             }
         });
         pack();
-    }
-
-    public static void main (String[] args){
-        MainFrame mf = new MainFrame();
     }
 }

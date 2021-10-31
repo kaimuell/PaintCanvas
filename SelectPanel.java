@@ -1,81 +1,59 @@
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class SelectPanel extends Panel {
-    Choice c, s;
+    Settings settings;
 
-    SelectPanel() {
+    SelectPanel(Settings settings) {
         this.setSize(400, 100);
         //Farbauswahl
-        this.c = new Choice();
-        c.add("BLUE");
-        c.add("CYAN");
-        c.add("RED");
-        c.add("MAGENTA");
-        c.add("GREEN");
-        c.add("YELLOW");
-        c.add("ORANGE");
-        c.add("WHITE");
-        c.add("BLACK");
-        this.add(c);
+        JButton colorChoiceButton = new JButton("Farbauswahl");
+        colorChoiceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color color = JColorChooser.showDialog(null, "Farbauswahl", settings.getSelectedColor());
+                if (color!= null) {
+                    settings.setColor(color);
+                }
+            }
+        });
 
+        this.add(colorChoiceButton);
+
+        String[] s = {"1", "3", "5", "10", "20", "40", "80"};
         //Strokeauswahl
-        this.s = new Choice();
-        s.add("1");
-        s.add("3");
-        s.add("5");
-        s.add("10");
-        s.add("20");
-        s.add("40");
-        s.add("80");
+        JComboBox strokes = new JComboBox(s);
+        strokes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == strokes) {
+                    Object o = Objects.requireNonNull(strokes.getSelectedItem());
+                    if ("1".equals(o)) {
+                        settings.setStrokeSize(1.0f);
+                    } else if ("3".equals(o)) {
+                        settings.setStrokeSize(3.0f);
+                    } else if ("5".equals(o)) {
+                        settings.setStrokeSize(5.0f);
+                    } else if ("10".equals(o)) {
+                        settings.setStrokeSize(10.0f);
+                    } else if ("20".equals(o)) {
+                        settings.setStrokeSize(20.0f);
+                    } else if ("40".equals(o)) {
+                        settings.setStrokeSize(40.0f);
+                    } else if ("80".equals(o)) {
+                        settings.setStrokeSize(80.0f);
+                    } else {
+                        settings.setStrokeSize(3.0f);
+                    }
+                }
+            }
+        });
 
-        this.add(s);
+        this.add(strokes);
 
         this.setVisible(true);
-    }
-
-    public Color getSelectedColor(){
-        switch (c.getSelectedItem()) {
-            case "BLUE":
-                return Color.BLUE;
-            case "CYAN":
-                return Color.CYAN;
-            case "RED":
-                return Color.RED;
-            case "MAGENTA":
-                return Color.MAGENTA;
-            case "GREEN":
-                return Color.GREEN;
-            case "YELLOW":
-                return Color.YELLOW;
-            case "ORANGE" :
-                return Color.ORANGE;
-            case "WHITE":
-                return Color.WHITE;
-            case "BLACK" :
-                return Color.BLACK;
-            default :
-            return Color.WHITE;
-        }
-    }
-
-    public BasicStroke getSelectedStroke(){
-        switch (s.getSelectedItem()) {
-            case "1":
-                return new BasicStroke(1.0f);
-            case "3":
-                return new BasicStroke(3.0f);
-            case "5":
-                return new BasicStroke(5.0f);
-            case "10":
-                return new BasicStroke(10.0f);
-            case "20":
-                return new BasicStroke(20.0f);
-            case "40":
-                return new BasicStroke(40.0f);
-            case "80":
-                return new BasicStroke(80.0f);
-            default :
-                return new BasicStroke(3.0f);
-        }
     }
 }
